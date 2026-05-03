@@ -3,6 +3,8 @@ package com.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -16,11 +18,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
-    private String role;    // submittedBy (user) and approver
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> roles;    // submittedBy (user) and approver
 }

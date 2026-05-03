@@ -19,16 +19,19 @@ public class Document {
 
     private String title;
 
+    @Column(length = 5000)
     private String content;
 
     @Enumerated(EnumType.STRING)
     private com.entity.DocumentStatus status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User submittedBy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User approver;
 
     private LocalDateTime createdAt; //time never change
+
+    private LocalDateTime updatedAt;
 }

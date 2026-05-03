@@ -1,24 +1,24 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:docflow
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/documentflow
+    username: postgres
+    password: 12345678
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
+    open-in-view: false  # db access is only allowed in service layer, not controller; better performance
     show-sql: true
-
-  h2:
-    console:
-      enabled: true
+    properties:
+      hibernate:
+        format_sql: true
 
   mail:
     host: smtp.gmail.com
     port: 587
     username: your_email@gmail.com
-    password: your_password
+    password: your_app_password
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -27,5 +27,5 @@ server:
   port: 8080
 
 jwt:
-  secret: mysecretkey
+  secret: VERY_SECRET_KEY_CHANGE_THIS
   expiration: 86400000
