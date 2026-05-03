@@ -18,7 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false) // prevent duplicates
     private String username;
 
     @Column(unique = true, nullable = false)
@@ -29,4 +29,5 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles;    // submittedBy (user) and approver
+    // set  is flexible multi-role system, instead of enums
 }
