@@ -34,4 +34,21 @@ public class DocumentService {
                 .approver(approver)
                 .createdAt(LocalDateTime.now())
                 .build();
+
+        documentRepository.save(doc);
+
+        auditLogRepository.save(
+                AuditLog.builder()
+                        .action("DOCUMENT_SUBMITTED")
+                        .details("Document ID: " + doc.getId())
+                        .timestamp(LocalDateTime.now())
+                        .build()
+        );
+
+        return DocumentResponseDTO.builder()
+                .id(doc.getId())
+                .title(doc.getTitle())
+                .status(doc.getStatus())
+                .build();
+    }
 }

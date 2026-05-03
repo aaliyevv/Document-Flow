@@ -22,5 +22,5 @@ public class User {
 
     private String password;
 
-    private String role; // submittedBy and approver
+    private String role;    // submittedBy (user) and approver
 }
