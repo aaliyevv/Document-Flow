@@ -4,6 +4,7 @@ import com.dto.AuthResponse;
 import com.dto.LoginRequest;
 import com.dto.RegisterRequest;
 import com.entity.User;
+import com.security.JwtService;
 import com.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +28,13 @@ public class AuthController {
 
     public AuthResponse login(@RequestBody LoginRequest loginRequest){
 
-        User user = userService.
+        User user = userService.findByUsername(loginRequest.getUsername());
+
+        if (!user.getPassword().equals(loginRequest.getPassword())) {
+            throw new RuntimeException("Wrong password");
+        }
+
+        String token = JwtService.ge
     }
 
 }
