@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtService jwtService;
 
     @PostMapping("/login")
     public String register(
@@ -34,7 +35,10 @@ public class AuthController {
             throw new RuntimeException("Wrong password");
         }
 
-        String token = JwtService.ge
-    }
+        String token = jwtService.generateToken(user.getUsername());
 
+        return AuthResponse.builder()
+                .token(token)
+                .build();
+    }
 }
