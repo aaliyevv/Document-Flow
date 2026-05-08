@@ -7,6 +7,8 @@ import com.entity.User;
 import com.security.JwtService;
 import com.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,23 +21,26 @@ public class AuthController {
 
     private final UserService userService;
     private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/login")
+    @PostMapping("/register")
     public String register(
             @RequestBody RegisterRequest registerRequest) {
         userService.register(registerRequest);
         return "User Registered Successfully";
     }
 
+    @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequest loginRequest){
 
-        User user = userService.findByUsername(loginRequest.getUsername());
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
+        );
 
-        if (!user.getPassword().equals(loginRequest.getPassword())) {
-            throw new RuntimeException("Wrong password");
-        }
-
-        String token = jwtService.generateToken(user.getUsername());
+        String token = jwtService.generateToken(loginRequest.getUsername());
 
         return AuthResponse.builder()
                 .token(token)

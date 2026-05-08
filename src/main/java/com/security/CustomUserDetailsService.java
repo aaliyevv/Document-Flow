@@ -27,6 +27,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         return mapToUserDetails(user);
     }
 
+    // spring sec. works only UserDetails
+    // which contains the exact security info (username, password, roles)
+
     private UserDetails mapToUserDetails(User user){
 
         UserBuilder builder = org.springframework.security.core.userdetails.User // not user entity
