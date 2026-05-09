@@ -4,6 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -44,4 +45,11 @@ public class JwtService {
     }
 
     //jwts - jwt utilities, jws - signed token format
+
+    public boolean isTokenValid(String token, UserDetails userDetails){
+
+        String username = extractUsername(token);
+
+        return (username.equals(userDetails.getUsername()));
+    }
 }
