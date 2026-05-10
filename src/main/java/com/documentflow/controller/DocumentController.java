@@ -5,6 +5,7 @@ import com.documentflow.dto.DocumentRequestDTO;
 import com.documentflow.dto.DocumentResponseDTO;
 import com.documentflow.service.DocumentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,11 +15,5 @@ public class DocumentController {
 
     private final DocumentService documentService;
 
-    @PostMapping
-    public DocumentResponseDTO submit(
-            @RequestBody DocumentRequestDTO dto,
-            @RequestHeader("X-USER") String username
-    ) {
-        return documentService.submitDocument(dto, username);
-    }
+
 }
