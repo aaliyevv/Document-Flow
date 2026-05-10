@@ -15,5 +15,31 @@ public class DocumentController {
 
     private final DocumentService documentService;
 
+    @PostMapping
+    public DocumentResponseDTO submitDocument(
+            @RequestBody DocumentRequestDTO dto,
+            Authentication authentication) {
 
+        return documentService.submitDocument(dto, authentication.getName());
+    }
+
+    @PutMapping("/{id}/approve")
+    public DocumentResponseDTO approveDocument(
+            @PathVariable Long id,
+            @RequestBody ApprovalRequest approvalRequest,
+            Authentication authentication
+    ){
+        return documentService.approveDocument(
+                id,authentication.getName(), approvalRequest);
+    }
+
+    @PutMapping("/{id}/reject")
+    public DocumentResponseDTO rejectDocument(
+            @PathVariable Long id,
+            @RequestBody ApprovalRequest approvalRequest,
+            Authentication authentication
+    ){
+        return documentService.rejectDocument(
+                id, authentication.getName(), approvalRequest);
+    }
 }
