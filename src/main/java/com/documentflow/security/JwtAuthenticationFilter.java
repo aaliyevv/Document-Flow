@@ -26,5 +26,45 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
 
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
 
+        String authHeader = request.getHeader("Authorization");
+
+        String token = null;
+        String username = null;
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring("Bearer ".length());
+            username = jwtService.extractUsername(token);
+        }
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+
+            if (jwtService.isTokenValid(token, userDetails)) {
+
+                // no need password again, only username and role
+                UsernamePasswordAuthenticationToken authtoken =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+
+                // where the request came from
+                authtoken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
+                SecurityContextHolder.getContext().setAuthentication(authtoken);
+            }
+
+            filterChain.doFilter(request, response);  // pass to the next filter
+        }
+    }
 }
