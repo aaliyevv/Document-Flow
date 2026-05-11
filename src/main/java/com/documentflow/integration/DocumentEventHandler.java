@@ -45,6 +45,4 @@ public class DocumentEventHandler {
                                 "Your document has been approved."
                         );
                         break;
-
-
 }
