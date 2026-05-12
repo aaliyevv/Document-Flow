@@ -5,6 +5,7 @@ import com.documentflow.dto.DocumentRequestDTO;
 import com.documentflow.dto.DocumentResponseDTO;
 import com.documentflow.service.DocumentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ public class DocumentController {
 
     private final DocumentService documentService;
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public DocumentResponseDTO submitDocument(
             @RequestBody DocumentRequestDTO dto,
@@ -23,6 +25,7 @@ public class DocumentController {
         return documentService.submitDocument(dto, authentication.getName());
     }
 
+    @PreAuthorize("hasRole('APPROVER')")
     @PutMapping("/{id}/approve")
     public DocumentResponseDTO approveDocument(
             @PathVariable Long id,
@@ -33,6 +36,7 @@ public class DocumentController {
                 id,authentication.getName(), approvalRequest);
     }
 
+    @PreAuthorize("hasRole('APPROVER')")
     @PutMapping("/{id}/reject")
     public DocumentResponseDTO rejectDocument(
             @PathVariable Long id,

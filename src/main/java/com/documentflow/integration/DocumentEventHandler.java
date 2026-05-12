@@ -20,29 +20,31 @@ public class DocumentEventHandler {
     @ServiceActivator(inputChannel = "documentChannel")
     public void handleDocumentEvent(DocumentEvent documentEvent) {
 
-        Document document = documentRepository.findById(documentEvent.getDocumentId())
-                .orElseThrow(() -> new RuntimeException("Document not found"));
+        try {
+
+            Document document = documentRepository.findById(documentEvent.getDocumentId())
+                    .orElseThrow(() -> new RuntimeException("Document not found"));
 
 
-                switch (documentEvent.getAction()) {
+            switch (documentEvent.getAction()) {
 
-                    case "SUBMITTED":
-                        document.setStatus(DocumentStatus.PENDING_APPROVAL);
+                case "SUBMITTED":
+                    document.setStatus(DocumentStatus.PENDING_APPROVAL);
 
-                        emailService.sendEmail(
-                                document.getApprover().getEmail(),
-                                "Document Approval Request",
-                                buildSubmissionMessage(document)
-                        );
-                        break;
+                    emailService.sendEmail(
+                            document.getApprover().getEmail(),
+                            "Document Approval Request",
+                            buildSubmissionMessage(document)
+                    );
+                    break;
 
-                    case "APPROVED":
-                        document.setStatus(DocumentStatus.APPROVED);
+                case "APPROVED":
+                    document.setStatus(DocumentStatus.APPROVED);
 
-                        emailService.sendEmail(
-                                document.getSubmittedBy().getEmail(),
-                                "Document Approved",
-                                "Your document has been approved."
-                        );
-                        break;
+                    emailService.sendEmail(
+                            document.getSubmittedBy().getEmail(),
+                            "Document Approved",
+                            "Your document has been approved."
+                    );
+                    break;
 }
