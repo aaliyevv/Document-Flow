@@ -47,4 +47,37 @@ public class DocumentEventHandler {
                             "Your document has been approved."
                     );
                     break;
+
+                case "REJECTED":
+                    document.setStatus(DocumentStatus.REJECTED);
+
+                    emailService.sendEmail(
+                            document.getApprover().getEmail(),
+                            "Document Rejected",
+                            "Your document has been rejected."
+                    );
+                    break;
+            }
+
+            documentRepository.save(document);
+        }
+
+        catch (Exception e) {
+
+            System.out.println("Email sending failed: " + e.getMessage());
+        }
+    }
+
+    private String buildSubmissionMessage(Document document ) {
+
+        return """
+                A new document requires your approval.
+                
+                Title: %s
+                SubmittedBy: %s
+                """.formatted(
+                        document.getTitle(),
+                        document.getSubmittedBy().getUsername()
+        );
+    }
 }
