@@ -100,4 +100,39 @@ public class DocumentService {
         );
 
         return mapToResponse(document);
-    }}
+    }
+
+    public DocumentResponseDTO rejectDocument(
+            Long documentId,
+            String approverUsername,
+            ApprovalRequest  approvalRequest
+    ) {
+
+        Document document = getDocument(documentId);
+
+        if (!document.getApprover().getUsername().equals(approverUsername)) {
+            throw new RuntimeException("This is not approver");
+        }
+
+//        document.setStatus(DocumentStatus.REJECTED);
+//        document.setUpdatedAt(LocalDateTime.now());
+//        documentRepository.save(document);
+
+        documentChannel.send(
+                MessageBuilder.withPayload(
+                        new DocumentEvent(documentId, "REJECTED", approverUsername)
+                ).build()
+        );
+
+
+        auditService.log(
+                "DOCUMENT_REJECTED",
+                approvalRequest.getComment(),
+                documentId,
+                approverUsername
+        );
+
+        return mapToResponse(document);
+    }
+
+}
