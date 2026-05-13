@@ -67,4 +67,37 @@ public class DocumentService {
         return mapToResponse(document);
     }
 
-}
+    // only the owner of action can do the same action
+
+    public DocumentResponseDTO approveDocument(
+            Long documentId,
+            String approverUsername,
+            ApprovalRequest  approvalRequest
+    ) {
+
+        Document document = getDocument(documentId);
+
+        if (!document.getApprover().getUsername().equals(approverUsername)) {
+            throw new RuntimeException("This is not approver");
+        }
+
+//        document.setStatus(DocumentStatus.APPROVED);
+//        document.setUpdatedAt(LocalDateTime.now());
+//        documentRepository.save(document);
+
+        documentChannel.send(
+                MessageBuilder.withPayload(
+                        new DocumentEvent(documentId, "APPROVED", approverUsername))
+                        .build()
+                );
+
+
+        auditService.log(
+                "DOCUMENT_APPROVED",
+                approvalRequest.getComment(),
+                documentId,
+                approverUsername
+        );
+
+        return mapToResponse(document);
+    }}
