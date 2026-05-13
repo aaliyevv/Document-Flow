@@ -24,12 +24,12 @@ public class OpenApiConfig {
                                 .version("1.0"))
                 .addSecurityItem(
                         new SecurityRequirement().addList(securitySchemeName))
-                .components(
+                .components( // configurations
                         new Components().addSecuritySchemes(
                                 securitySchemeName, new SecurityScheme()
                                         .name(securitySchemeName)
                                         .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
+                                        .scheme("bearer") // authentication method
                                         .bearerFormat("JWT")
                         )
                 );

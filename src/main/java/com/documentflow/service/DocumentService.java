@@ -38,4 +38,33 @@ public class DocumentService {
 
         User approver = userRepository.findById(dto.getApproverId())
                 .orElseThrow(() -> new NotFoundException("Approver not found"));
+
+        Document document = Document.builder()
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .status(DocumentStatus.SUBMITTED)
+                .submittedBy(user)
+                .approver(approver)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        documentRepository.save(document);
+
+        documentChannel.send(
+                MessageBuilder.withPayload(
+                        new DocumentEvent(document.getId(), "SUBMITTED", username)
+                ).build()
+        );
+
+        auditService.log(
+                "DOCUMENT_SUBMITTED",
+                "Document submitted for approval",
+                document.getId(),
+                username
+        );
+
+        return mapToResponse(document);
+    }
+
 }
