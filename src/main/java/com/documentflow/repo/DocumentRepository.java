@@ -13,5 +13,5 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     List<Document> findByApproverUsername(String username);
 
-    Example<? extends Document> id(Long id);
+//    Example<? extends Document> id(Long id);
 }

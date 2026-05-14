@@ -135,4 +135,17 @@ public class DocumentService {
         return mapToResponse(document);
     }
 
+    private Document getDocument(Long documentId) {
+        return documentRepository.findById(documentId)
+                .orElseThrow(() -> new NotFoundException("Document not found"));
+    }
+
+    private DocumentResponseDTO mapToResponse(Document document) {
+
+        return DocumentResponseDTO.builder()
+                .id(document.getId())
+                .status(document.getStatus())
+                .title(document.getTitle())
+                .build();
+    }
 }

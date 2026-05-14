@@ -22,8 +22,10 @@ public class OpenApiConfig {
                                 .title("DocumentFlow API")
                                 .description("Automated Document Approval Workflow API")
                                 .version("1.0"))
+
                 .addSecurityItem(
                         new SecurityRequirement().addList(securitySchemeName))
+
                 .components( // configurations
                         new Components().addSecuritySchemes(
                                 securitySchemeName, new SecurityScheme()

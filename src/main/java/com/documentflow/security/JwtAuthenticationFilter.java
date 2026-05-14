@@ -25,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService  jwtService;
     private final UserDetailsService userDetailsService;
 
-
+    @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -64,7 +64,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authtoken);
             }
 
-            filterChain.doFilter(request, response);  // pass to the next filter
         }
+
+        filterChain.doFilter(request, response);  // pass to the next filter
+
     }
 }

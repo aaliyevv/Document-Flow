@@ -39,9 +39,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // no need stateless JWT-based APIs
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**"
+                                "/api/auth/**",  // for login, register to send token
+                                "/v3/api-docs/**",  // swagger's backend data
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"  // old version
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
