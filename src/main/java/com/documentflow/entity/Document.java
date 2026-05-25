@@ -26,10 +26,10 @@ public class Document {
     @Enumerated(EnumType.STRING)
     private DocumentStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User submittedBy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private User approver;
 
     private LocalDateTime createdAt; //time never change

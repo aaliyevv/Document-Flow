@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.8'  # no need for V2
 
 services:
 
@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_DB: documentflow
       POSTGRES_USERNAME: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: 12345678
     ports:
       - "5432:5432"
     volumes:
@@ -24,7 +24,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/documentflow
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345678
 
 volumes:
   postgres_data:

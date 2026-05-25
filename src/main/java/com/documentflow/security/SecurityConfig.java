@@ -33,7 +33,8 @@ public class SecurityConfig {
 
     // security rules
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity httpSecurity, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
 
         httpSecurity
                 .csrf(csrf -> csrf.disable()) // no need stateless JWT-based APIs

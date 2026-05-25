@@ -10,6 +10,7 @@ public class IntegrationConfig {
 
     @Bean
     public MessageChannel documentChannel() {
+
         return new DirectChannel();
     }
 }

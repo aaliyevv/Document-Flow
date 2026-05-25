@@ -1,6 +1,5 @@
 package com.documentflow.integration;
 
-import com.documentflow.entity.enums.DocumentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,6 +8,10 @@ import lombok.Data;
 public class DocumentEvent {
 
     private Long documentId;
-    private String action;
-    private String performedBy;
+    private String action; // SUBMITTED, APPROVED, REJECTED
+
+    private String approverEmail;
+    private String submitterEmail;
+
+    private String title;
 }

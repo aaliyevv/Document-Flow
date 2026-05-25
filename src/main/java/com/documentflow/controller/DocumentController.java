@@ -4,6 +4,7 @@ import com.documentflow.dto.*;
 import com.documentflow.dto.DocumentRequestDTO;
 import com.documentflow.dto.DocumentResponseDTO;
 import com.documentflow.service.DocumentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -19,7 +20,7 @@ public class DocumentController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping
     public DocumentResponseDTO submitDocument(
-            @RequestBody DocumentRequestDTO dto,
+            @Valid @RequestBody DocumentRequestDTO dto,
             Authentication authentication) {
 
         return documentService.submitDocument(dto, authentication.getName());

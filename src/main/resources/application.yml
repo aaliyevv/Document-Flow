@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/documentflow
-    username: postgres
-    password: 12345678
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/documentflow}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:12345678}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -17,8 +17,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: your_email@gmail.com
-    password: your_app_password
+    username: alialiyev20035558@gmail.com
+    password: nujjrxliyxkggxgl
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -29,3 +29,5 @@ server:
 jwt:
   secret: f8K2mP9xL4qT7vN3zR6wY1uD5sA8bC0eX9nM2kJ7 # more than 256 bits for HS256
   expiration: 86400000
+
+kind: Application

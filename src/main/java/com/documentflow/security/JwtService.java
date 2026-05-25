@@ -19,6 +19,7 @@ public class JwtService {
     private String Secret;
 
     private Key getKey() {
+
         return Keys.hmacShaKeyFor(Secret.getBytes()); // convert bytes, creates a cryptographic key
     }
 

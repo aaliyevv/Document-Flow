@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,7 @@ public class EmailService {
     //DocumentService doesn't know email, only workflow like enterprise.
 
     private final JavaMailSender javaMailSender;
+    private Authentication authentication;
 
     @Retryable(
             retryFor = Exception.class,
@@ -24,7 +26,9 @@ public class EmailService {
             backoff = @Backoff(delay = 3000)
     )
 
-    public void sendEmail(String to, String subject, String text) {
+    public void sendEmail(String subject, String text) {
+
+        String to = "elcanabdullazada@gmail.com";
 
         System.out.println("Sending email to " + to);
 
