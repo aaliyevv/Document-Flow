@@ -29,6 +29,7 @@ public class DocumentService {
     private final AuditService auditService;
     private final MessageChannel documentChannel;
 
+    @Transactional
     public DocumentResponseDTO submitDocument(DocumentRequestDTO dto, String username) {
 
         User user = userRepository.findByUsername(username)

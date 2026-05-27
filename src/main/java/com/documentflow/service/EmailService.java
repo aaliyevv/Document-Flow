@@ -28,7 +28,7 @@ public class EmailService {
 
     public void sendEmail(String subject, String text) {
 
-        String to = "elcanabdullazada@gmail.com";
+        String to = "aliyevali.edu@mail.ru";
 
         System.out.println("Sending email to " + to);
 
