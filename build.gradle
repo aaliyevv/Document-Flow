@@ -26,6 +26,8 @@ dependencies {
     implementation 'org.springframework.retry:spring-retry:2.0.12'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     // apply retry
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    // RabbitMQ
 
     implementation 'org.springframework.integration:spring-integration-core'
     implementation 'org.springframework.integration:spring-integration-mail'

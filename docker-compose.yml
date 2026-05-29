@@ -2,12 +2,19 @@ version: '3.8'  # no need for V2
 
 services:
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672" # for app
+      - "15672:15672" # RabbitMQ dashboard
+
   postgres:
     image: postgres:15
     container_name: documentflow-db
     environment:
       POSTGRES_DB: documentflow
-      POSTGRES_USERNAME: postgres
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345678
     ports:
       - "5432:5432"
@@ -21,6 +28,8 @@ services:
       - "8080:8080"
     depends_on:
       - postgres
+      - rabbitmq
+
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/documentflow
       SPRING_DATASOURCE_USERNAME: postgres

@@ -5,6 +5,7 @@ import com.documentflow.entity.enums.DocumentStatus;
 import com.documentflow.repo.DocumentRepository;
 import com.documentflow.service.EmailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,8 @@ public class DocumentEventHandler {
     private final EmailService emailService;
 
     @Transactional
-    @ServiceActivator(inputChannel = "documentChannel")
+//    @ServiceActivator(inputChannel = "documentChannel")
+    @RabbitListener(queues = "document.queue")
     public void handleDocumentEvent(DocumentEvent event) {
 
         Document document = documentRepository.findById(event.getDocumentId())

@@ -13,6 +13,7 @@ import com.documentflow.repo.*;
 import com.documentflow.repo.DocumentRepository;
 import com.documentflow.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,8 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final UserRepository userRepository;
     private final AuditService auditService;
-    private final MessageChannel documentChannel;
+//    private final MessageChannel documentChannel;
+    private final RabbitTemplate rabbitTemplate;
 
     @Transactional
     public DocumentResponseDTO submitDocument(DocumentRequestDTO dto, String username) {
@@ -49,8 +51,7 @@ public class DocumentService {
 
         documentRepository.save(document);
 
-        documentChannel.send(
-                MessageBuilder.withPayload(
+        rabbitTemplate.convertAndSend("document.queue",
                         new DocumentEvent(
                                 document.getId(),
                                 "SUBMITTED",
@@ -58,8 +59,7 @@ public class DocumentService {
                                 user.getEmail(),
                                 document.getTitle()
                         )
-                ).build()
-        );
+                );
 
         auditService.log(
                 "DOCUMENT_SUBMITTED",
@@ -84,8 +84,7 @@ public class DocumentService {
             throw new UnauthorizedActionException("You are not assigned approver");
         }
 
-        documentChannel.send(
-                MessageBuilder.withPayload(
+        rabbitTemplate.convertAndSend("document.queue",
                         new DocumentEvent(
                                 document.getId(),
                                 "APPROVED",
@@ -93,8 +92,7 @@ public class DocumentService {
                                 document.getSubmittedBy().getEmail(),
                                 document.getTitle()
                         )
-                ).build()
-        );
+                );
 
         auditService.log(
                 "DOCUMENT_APPROVED",
@@ -118,8 +116,8 @@ public class DocumentService {
         if (!document.getApprover().getUsername().equals(approverUsername)) {
             throw new UnauthorizedActionException("You are not assigned approver");
         }
-        documentChannel.send(
-                MessageBuilder.withPayload(
+
+        rabbitTemplate.convertAndSend("document.queue",
                         new DocumentEvent(
                                 document.getId(),
                                 "REJECTED",
@@ -127,8 +125,7 @@ public class DocumentService {
                                 document.getSubmittedBy().getEmail(),
                                 document.getTitle()
                         )
-                ).build()
-        );
+                );
 
         auditService.log(
                 "DOCUMENT_REJECTED",
