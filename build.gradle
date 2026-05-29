@@ -28,6 +28,7 @@ dependencies {
     // apply retry
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     // RabbitMQ
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
     implementation 'org.springframework.integration:spring-integration-core'
     implementation 'org.springframework.integration:spring-integration-mail'
