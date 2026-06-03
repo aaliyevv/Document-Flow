@@ -9,7 +9,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue documentQueue(){
-        return new Queue("document.queue", true);  // durable = true, queue survives RabbitMQ restart
+        return new Queue("document.queue", true);
+        // durable = true, queue survives RabbitMQ restart
     }
-
 }

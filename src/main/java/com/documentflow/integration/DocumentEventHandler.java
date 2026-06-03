@@ -1,5 +1,6 @@
 package com.documentflow.integration;
 
+import com.documentflow.dto.NotificationMessage;
 import com.documentflow.entity.Document;
 import com.documentflow.entity.enums.DocumentStatus;
 import com.documentflow.repo.DocumentRepository;
@@ -7,6 +8,7 @@ import com.documentflow.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,7 @@ public class DocumentEventHandler {
 
     private final DocumentRepository documentRepository;
     private final EmailService emailService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
 
     @Transactional
 //    @ServiceActivator(inputChannel = "documentChannel")
@@ -38,6 +41,13 @@ public class DocumentEventHandler {
                         "Document Approval Request",
                         buildSubmissionMessage(event.getTitle())
                 );
+
+                simpMessagingTemplate.convertAndSend(
+                        "/topic/documents", new NotificationMessage(
+                                "New document submitted: " + event.getTitle(),
+                                "PENDING_APPROVAL"
+                        )
+                );
                 break;
 
             case "APPROVED":
@@ -47,6 +57,13 @@ public class DocumentEventHandler {
                         "Document Approved",
                         "Your document has been approved."
                 );
+
+                simpMessagingTemplate.convertAndSend(
+                        "/topic/documents", new NotificationMessage(
+                                "Document approved: " + event.getTitle(),
+                                "APPROVED"
+                        )
+                );
                 break;
 
             case "REJECTED":
@@ -55,6 +72,13 @@ public class DocumentEventHandler {
                 emailService.sendEmail(
                         "Document Rejected",
                         "Your document has been rejected."
+                );
+
+                simpMessagingTemplate.convertAndSend(
+                        "/topic/documents", new NotificationMessage(
+                                "Documenent rejected: " +event.getTitle(),
+                                "REJECTED"
+                        )
                 );
                 break;
         }

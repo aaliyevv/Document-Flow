@@ -27,6 +27,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         registry.addEndpoint("/ws")  //    ws://localhost:8080/ws
                 .setAllowedOrigins("*")
-                .withSockJS();
+                .withSockJS(); // default: long Polling
     }
 }
