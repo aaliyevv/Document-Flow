@@ -35,5 +35,3 @@ server:
 jwt:
   secret: f8K2mP9xL4qT7vN3zR6wY1uD5sA8bC0eX9nM2kJ7 # more than 256 bits for HS256
   expiration: 86400000
-
-kind: Application

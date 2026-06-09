@@ -1,21 +1,18 @@
 package com.documentflow.service;
 
 import com.documentflow.dto.*;
-import com.documentflow.entity.*;
 import com.documentflow.dto.DocumentRequestDTO;
 import com.documentflow.dto.DocumentResponseDTO;
 import com.documentflow.entity.Document;
 import com.documentflow.entity.User;
+import com.documentflow.entity.enums.DocumentStatus;
 import com.documentflow.exception.NotFoundException;
 import com.documentflow.exception.UnauthorizedActionException;
 import com.documentflow.integration.DocumentEvent;
-import com.documentflow.repo.*;
 import com.documentflow.repo.DocumentRepository;
 import com.documentflow.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +40,7 @@ public class DocumentService {
         Document document = Document.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())
+                .status(DocumentStatus.PENDING_APPROVAL)
                 .submittedBy(user)
                 .approver(approver)
                 .createdAt(LocalDateTime.now())

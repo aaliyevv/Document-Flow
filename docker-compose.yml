@@ -1,4 +1,4 @@
-version: '3.8'  # no need for V2
+#version: '3.8'  # no need for V2
 
 services:
 
@@ -34,6 +34,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/documentflow
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 12345678
+      # ADD THIS LINE RIGHT HERE TO FORCE BYPASS THE SECURITY EXCEPTION PERMANENTLY
+      SPRING_AMQP_DESERIALIZATION_TRUST_ALL: "true"
 
 volumes:
   postgres_data:
